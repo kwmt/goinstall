@@ -25,7 +25,7 @@
     $ wget https://raw.github.com/kwmt/goinstall/master/goinstall.sh
     $ wget https://raw.github.com/kwmt/goinstall/master/gosetting.sh
     $ chmod +x goinstall.sh gosetting.sh 
-    $ sudo ./goinstall.sh 
+    $ sudo ./goinstall.sh <login user>
     $ source ~/.bashrc ( if you use bash )
     $ go version
     go version gox.x.x ( where x is number )
