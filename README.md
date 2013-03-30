@@ -33,7 +33,7 @@
 3. Support OS
 ==========
 * Linux(Ubuntu,Cent OS)
-* Mac
+* Mac ( but you need to install gcc and Mercurial. )
 
 
 4. Contribution
