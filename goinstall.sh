@@ -23,44 +23,53 @@ else
     #exit 1
 fi
 
-if  [ "uname -a | grep Ubuntu" ];then
-    #for Ubuntu
+#Check OS
+if [ -f /etc/lsb-release ]; then
+    . /etc/lsb-release
     dlcmd="apt-get -y"
     homedir="/home/$1"
+elif [ -f /etc/debian_version ]; then
+    dlcmd="apt-get -y"
+    homedir="/home/$1"
+elif [ -f /etc/redhat-release ]; then
+    dlcmd="yum -y"
+    homedir="/home/$1"
+elif [ -f /etc/system-release ]; then
+    dlcmd="yum -y"
+    homedir="/home/$1"
+elif [ `uname` = "Darwin" ]; then #for Mac
+    homedir="/Users/$1"
 else
-    os=`uname`
-    if [ $os = "Linux" ]; then 
-        #for Red Hat System (Cent OS,  Fedora etc...)
-        dlcmd="yum -y"
-        homedir="/home/$1"
-    elif [ $os = "Darwin" ]; then
-        #for Mac
-        if  ! type >/dev/null "port" 2>&1 ; then
-            echo "You need to install Xcode and gcc."
-            exit 1
-        fi
-        dlcmd="port"
-        homedir="/Users/$1"
-    else
-        echo "not Linux or Mac"
-        exit 1
-    fi
+    echo "not Linux or Mac"
+    exit 1
 fi
+
 
 # Install gcc
 if  ! type >/dev/null "gcc" 2>&1 ; then
-    echo "Installing gcc ..." 
-    $dlcmd install gcc
-    echo "Done"
+    if [ `uname` = "Darwin" ]; then #for Mac
+        echo "You need to install Xcode and gcc."
+        exit 1
+    else
+        echo "Installing gcc ..." 
+        $dlcmd install gcc
+        echo "Done"
+    fi
 else
     echo "gcc is installed."
 fi
 
 # Install Marcurial
 if  ! type >/dev/null "hg" 2>&1 ; then
-    echo "Installing Mercurial ..." 
-    $dlcmd install mercurial
-    echo "Done"
+    if [ `uname` = "Darwin" ]; then #for Mac
+        echo "You need to install Marcurial."
+        echo "http://mercurial.selenic.com/downloads/"
+        exit 1
+    else
+        echo "Installing Mercurial ..." 
+        $dlcmd install mercurial
+        echo "Done"
+    fi
 else
     echo "Mercurial is installed."
 fi
@@ -80,15 +89,15 @@ cd $installdir/src/
 echo `pwd`
 if  ! [  -d $installdir/bin -a -d $installdir/pkg ]; then
     echo "executing ./all.bash ..."
-    . ./all.bash
+    { . ./all.bash; }
     echo "Done"
 else
     echo "executed ./all.bash"
 fi
 
-# Set System variables
+# Set environment variables
 cd $homedir
-. ./gosetting.sh $1
+{ . ./gosetting.sh $1; }
 
 echo ""
 echo "ALL DONE"
