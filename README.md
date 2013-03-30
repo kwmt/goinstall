@@ -11,7 +11,7 @@
 2. How to install and use
 ==========
 
-・ if git is installed
+・ If git is installed
 ---------------------------
     $ git clone https://github.com/kwmt/goinstall
     $ cd goinstall/
@@ -20,7 +20,7 @@
     $ go version
     go version gox.x.x ( where x is number )
 
-・ if git is NOT installed
+・ If git is NOT installed
 ---------------------------
     $ wget https://raw.github.com/kwmt/goinstall/master/goinstall.sh
     $ wget https://raw.github.com/kwmt/goinstall/master/gosetting.sh
